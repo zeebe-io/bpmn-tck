@@ -35,3 +35,23 @@ testCases:
         args:
           element_name: C
           state: activated
+
+  - name: create incident if condition evaluation fail
+    description: the condition access a variable that doesn't exist
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: exclusive-gateway
+      - action: complete-task
+        args:
+          job_type: a
+
+    verifications:
+      - verification: incident-state
+        args:
+          error_type: EXTRACT_VALUE_ERROR
+          state: created
+          element_id: xor-gateway
+      - verification: workflow-instance-state
+        args:
+          state: activated

@@ -1,6 +1,7 @@
 resources:
   - message-boundary-event.bpmn
   - timer-boundary-event.bpmn
+  - error-boundary-event.bpmn
 
 testCases:
   - name: interrupt task with message
@@ -47,3 +48,57 @@ testCases:
         args:
           element_name: C
           state: activated
+
+  - name: interrupt task with error event
+    description: interrupt a task by a triggered error boundary event
+
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: error-boundary-event
+      - action: await-element-instance-state
+        args:
+          element_name: A
+          state: activated
+      - action: throw-error
+        args:
+          job_type: a
+          error_code: error-1
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: A
+          state: terminated
+      - verification: element-instance-state
+        args:
+          element_name: C
+          state: activated
+
+  - name: merge message variables
+    description: merge the variables of the message into the workflow instance when the boundary event is triggered
+
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: message-boundary-event
+          variables: '{"key":"key-1"}'
+      - action: await-element-instance-state
+        args:
+          element_name: A
+          state: activated
+      - action: publish-message
+        args:
+          message_name: cancel
+          correlation_key: key-1
+          variables: '{"x":1}'
+
+    verifications:
+        - verification: element-instance-state
+          args:
+            element_name: C
+            state: activated
+        - verification: workflow-instance-variable
+          args:
+            name: x
+            value: '1'

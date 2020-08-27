@@ -106,3 +106,31 @@ testCases:
       - verification: workflow-instance-state
         args:
           state: activated
+
+  - name: cancel instance on join
+    description: cancel the workflow instance while waiting on the joining gateway
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: parallel-gateway
+      - action: complete-task
+        args:
+          job_type: a
+      - action: await-element-instance-state
+        args:
+          element_id: from-A-to-join
+          state: taken
+      - action: await-element-instance-state
+        args:
+          element_name: B
+          state: activated
+      - action: cancel-instance
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: B
+          state: terminated
+      - verification: workflow-instance-state
+        args:
+          state: terminated

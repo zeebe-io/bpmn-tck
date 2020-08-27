@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_19dpmwy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.9.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_19dpmwy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
   <bpmn:process id="exclusive-gateway" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_0nd2mht</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0nd2mht" sourceRef="StartEvent_1" targetRef="Activity_1jz6ks2" />
-    <bpmn:exclusiveGateway id="Gateway_0piucw5" default="Flow_003dkc3">
+    <bpmn:exclusiveGateway id="xor-gateway" default="Flow_003dkc3">
       <bpmn:incoming>Flow_0n2nfx6</bpmn:incoming>
       <bpmn:outgoing>Flow_17wy192</bpmn:outgoing>
       <bpmn:outgoing>Flow_003dkc3</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_0n2nfx6" sourceRef="Activity_1jz6ks2" targetRef="Gateway_0piucw5" />
-    <bpmn:sequenceFlow id="Flow_17wy192" name="x &#62; 5" sourceRef="Gateway_0piucw5" targetRef="Activity_0dceglv">
+    <bpmn:sequenceFlow id="Flow_0n2nfx6" sourceRef="Activity_1jz6ks2" targetRef="xor-gateway" />
+    <bpmn:sequenceFlow id="Flow_17wy192" name="x &#62; 5" sourceRef="xor-gateway" targetRef="Activity_0dceglv">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=x &gt; 5</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1jz6ks2" name="A">
@@ -21,7 +21,7 @@
       <bpmn:incoming>Flow_0nd2mht</bpmn:incoming>
       <bpmn:outgoing>Flow_0n2nfx6</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_003dkc3" sourceRef="Gateway_0piucw5" targetRef="Activity_1iq4mqw" />
+    <bpmn:sequenceFlow id="Flow_003dkc3" sourceRef="xor-gateway" targetRef="Activity_1iq4mqw" />
     <bpmn:serviceTask id="Activity_0dceglv" name="B">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="b" />
@@ -60,7 +60,7 @@
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0piucw5_di" bpmnElement="Gateway_0piucw5" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_0piucw5_di" bpmnElement="xor-gateway" isMarkerVisible="true">
         <dc:Bounds x="425" y="92" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="435" y="62" width="31" height="14" />

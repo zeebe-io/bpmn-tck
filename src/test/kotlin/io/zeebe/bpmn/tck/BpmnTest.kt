@@ -20,7 +20,7 @@ class BpmnTest(factory: SpecRunnerFactory) {
         val testResult = specRunner.runSingleTestCase(resources = spec.resources, testcase = spec.testCase)
 
         Assertions.assertThat(testResult.success)
-                .describedAs(testResult.message)
+                .describedAs("%s%nDetails: %s", testResult.message, testResult.output)
                 .isTrue()
     }
 
@@ -31,7 +31,7 @@ class BpmnTest(factory: SpecRunnerFactory) {
         val testResult = specRunner.runSingleTestCase(resources = spec.resources, testcase = spec.testCase)
 
         Assertions.assertThat(testResult.success)
-                .describedAs(testResult.message)
+                .describedAs("%s%nDetails: %s", testResult.message, testResult.output)
                 .isTrue()
     }
 
@@ -42,7 +42,7 @@ class BpmnTest(factory: SpecRunnerFactory) {
         val testResult = specRunner.runSingleTestCase(resources = spec.resources, testcase = spec.testCase)
 
         Assertions.assertThat(testResult.success)
-                .describedAs(testResult.message)
+                .describedAs("%s%nDetails: %s", testResult.message, testResult.output)
                 .isTrue()
     }
 
