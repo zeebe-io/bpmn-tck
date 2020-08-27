@@ -2,7 +2,7 @@ resources:
   - exclusive-gateway.bpmn
 
 testCases:
-  - name: condition-flow
+  - name: condition flow
     description: the condition is fulfilled
     actions:
       - action: create-instance
@@ -19,8 +19,8 @@ testCases:
           element_name: B
           state: activated
 
-  - name: default-flow
-    description: take the default flow
+  - name: default flow
+    description: no condition is fulfilled, take the default flow
     actions:
       - action: create-instance
         args:

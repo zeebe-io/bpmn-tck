@@ -1,9 +1,10 @@
 resources:
   - message-boundary-event.bpmn
+  - timer-boundary-event.bpmn
 
 testCases:
-  - name: interrupt-task
-    description: trigger the message event and interrupt the task
+  - name: interrupt task with message
+    description: interrupt a task by a triggered message boundary event
 
     actions:
       - action: create-instance
@@ -18,7 +19,6 @@ testCases:
         args:
           message_name: cancel
           correlation_key: key-1
-          variables: '{"x":1}'
 
     verifications:
       - verification: element-instance-state
@@ -29,7 +29,21 @@ testCases:
         args:
           element_name: C
           state: activated
-      - verification: workflow-instance-variable
+
+  - name: interrupt task with timer
+    description: interrupt a task by a triggered timer (duration) boundary event
+
+    actions:
+      - action: create-instance
         args:
-          name: x
-          value: '1'
+          bpmn_process_id: timer-boundary-event
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: A
+          state: terminated
+      - verification: element-instance-state
+        args:
+          element_name: C
+          state: activated

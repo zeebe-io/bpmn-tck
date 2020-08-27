@@ -1,0 +1,108 @@
+resources:
+  - parallel-gateway.bpmn
+  - asymmetric-parallel-gateway.bpmn
+
+testCases:
+  - name: fork on the outgoing flows
+    description: activate the tasks after the gateway in parallel
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: parallel-gateway
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: fork
+          state: completed
+      - verification: element-instance-state
+        args:
+          element_name: A
+          state: activated
+      - verification: element-instance-state
+        args:
+          element_name: B
+          state: activated
+
+  - name: await for all incoming flows
+    description: await on the gateway until all incoming flows are taken
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: parallel-gateway
+      - action: complete-task
+        args:
+          job_type: a
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: A
+          state: completed
+      - verification: element-instance-state
+        args:
+          element_id: from-A-to-join
+          state: taken
+      - verification: element-instance-state
+        args:
+          element_name: B
+          state: activated
+      - verification: workflow-instance-state
+        args:
+          state: activated
+
+  - name: join the incoming flows
+    description: complete the gateway when all incoming flows are taken
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: parallel-gateway
+      - action: complete-task
+        args:
+          job_type: a
+      - action: complete-task
+        args:
+          job_type: b
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: join
+          state: completed
+      - verification: workflow-instance-state
+        args:
+          state: completed
+
+  - name: wait for one token on each flow
+    description: wait until all incoming flows are taken and ignore multiple tokens on one flow
+    actions:
+      - action: create-instance
+        args:
+          bpmn_process_id: asymmetric-parallel-gateway
+      - action: complete-task
+        args:
+          job_type: b
+      - action: complete-task
+        args:
+          job_type: c
+
+    verifications:
+      - verification: element-instance-state
+        args:
+          element_name: B
+          state: completed
+      - verification: element-instance-state
+        args:
+          element_name: C
+          state: completed
+      - verification: element-instance-state
+        args:
+          element_id: from-B-C-to-join
+          state: taken
+      - verification: element-instance-state
+        args:
+          element_name: A
+          state: activated
+      - verification: workflow-instance-state
+        args:
+          state: activated
