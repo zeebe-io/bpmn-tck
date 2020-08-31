@@ -8,4 +8,6 @@ All test cases are stored in the folder: [/src/test/resources](/src/test/resourc
 
 ## Run the TCK
 
-The test cases can be run as JUnit 5 tests in an IDE or using the Maven command `mvn clean test`.
+The test cases can be run as JUnit 5 tests in an IDE, or using the Maven command `mvn clean test`.
+
+![BPMN-Spec JUnit test results](bpmn-spec-junit.png)
