@@ -13,7 +13,7 @@
     <kotlin.version>1.4.0</kotlin.version>
     <version.java>11</version.java>
 
-    <bpmn-spec.version>1.0.0-alpha1</bpmn-spec.version>
+    <bpmn-spec.version>1.0.0-alpha2</bpmn-spec.version>
 
   </properties>
 
